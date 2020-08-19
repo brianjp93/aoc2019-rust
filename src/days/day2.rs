@@ -48,7 +48,7 @@ fn find_pair(code: Vec<i64>) -> String {
             let comp = Computer { code: temp_code, index: 0 };
             output = comp.run();
             if output[0] == 19690720 {
-                return String::from(format!("{:02}{:02}", x, y))
+                return String::from(format!("{}", x * 100 + y))
             }
         }
     }
@@ -57,8 +57,8 @@ fn find_pair(code: Vec<i64>) -> String {
 
 pub fn main() {
     let mut input = utils::read_cs_nums("./src/data/day2.txt");
-    let extra = (1..1000).map(|_x| 0).collect::<Vec<i64>>();
-    input.extend(extra);
+    // let extra = (1..1000).map(|_x| 0).collect::<Vec<i64>>();
+    // input.extend(extra);
     let input2 = input.clone();
     input[1] = 12;
     input[2] = 2;
