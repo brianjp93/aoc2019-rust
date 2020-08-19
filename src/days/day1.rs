@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
+// #[allow(dead_code)]
 pub fn main() {
     let f = File::open("./src/data/day1.txt").unwrap();
     let reader = BufReader::new(f);
@@ -13,6 +14,7 @@ pub fn main() {
         part2 += find_fuel_recursive(input);
     }
 
+    println!("___Day 1___");
     println!("part1: {}", part1);
     println!("part2: {}", part2);
 }
