@@ -27,23 +27,21 @@ fn has_adj(nstr: &String) -> bool {
 }
 
 fn has_2_adj(nstr: &String) -> bool {
-    let mut groups = Vec::<[i32; 2]>::new();
-    let n1 = nstr[0..1].chars().next().unwrap().to_digit(10).unwrap() as i32;
-    groups.push([1, n1]);
+    let mut group_num = nstr[0..1].chars().next().unwrap();
+    let mut group_count = 1;
     for ch in nstr[1..].chars() {
-        let n = ch.to_digit(10).unwrap() as i32;
-        let glen = groups.len();
-        if n == groups[glen - 1][1] {
-            groups[glen - 1][0] += 1;
+        if ch == group_num {
+            group_count += 1;
         } else {
-            if groups[glen - 1][0] == 2 {
+            if group_count == 2 {
                 return true;
             } else {
-                groups.push([1, n])
+                group_count = 1;
+                group_num = ch;
             }
         }
     }
-    if groups[groups.len() - 1][0] == 2 {
+    if group_count == 2 {
         return true;
     }
     return false;
