@@ -44,7 +44,7 @@ fn get_distance(coord: &Point) -> i32 {
 
 fn get_steps_to(x: i32, y: i32, wire: &Vec<String>) -> i32 {
     let mut coord = Point { x: 0, y: 0 };
-    let destination = Point { x: x, y: y };
+    let destination = Point { x, y };
     let mut dist: i32 = 0;
     let moves = get_moves();
     for mov in wire {
