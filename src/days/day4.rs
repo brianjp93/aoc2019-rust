@@ -27,25 +27,24 @@ fn has_adj(nstr: &String) -> bool {
 }
 
 fn has_2_adj(nstr: &String) -> bool {
-    let mut n1: &str;
-    let mut n2: &str;
-    let mut n3: &str;
-    let mut n4: &str;
-    let l = nstr.len();
-    if nstr[0..1] == nstr[1..2] && nstr[1..2] != nstr[2..3] {
-        return true
-    }
-    if nstr[l-1..l] == nstr[l-2..l-1] && nstr[l-3..l-2] != nstr[l-2..l-1] {
-        return true
-    }
-    for i in 0..(nstr.len() - 3) {
-        n1 = &nstr[i..i + 1];
-        n2 = &nstr[i + 1..i + 2];
-        n3 = &nstr[i + 2..i + 3];
-        n4 = &nstr[i + 3..i + 4];
-        if n1 != n2 && n2 == n3 && n3 != n4 {
-            return true;
+    let mut groups = Vec::<[i32; 2]>::new();
+    let n1 = nstr[0..1].chars().next().unwrap().to_digit(10).unwrap() as i32;
+    groups.push([1, n1]);
+    for ch in nstr[1..].chars() {
+        let n = ch.to_digit(10).unwrap() as i32;
+        let glen = groups.len();
+        if n == groups[glen - 1][1] {
+            groups[glen - 1][0] += 1;
+        } else {
+            if groups[glen - 1][0] == 2 {
+                return true;
+            } else {
+                groups.push([1, n])
+            }
         }
+    }
+    if groups[groups.len() - 1][0] == 2 {
+        return true;
     }
     return false;
 }
