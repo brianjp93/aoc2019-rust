@@ -72,6 +72,7 @@ fn get_coord_set(wire: Vec<String>) -> HashSet<Point> {
         let dir = &mov[0..1];
         let change = moves.get(&dir).unwrap();
         let n = &mov[1..];
+        println!("{}", n);
         let n: i32 = n.parse().unwrap();
         for _i in 0..n {
             coord.x += change.x;
