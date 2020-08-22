@@ -42,9 +42,7 @@ impl Computer {
                 6 => self.jump_if_false(),
                 7 => self.less_than(),
                 8 => self.equals(),
-                99 => {
-                    break;
-                }
+                99 => break,
                 _ => {
                     println!("wtf");
                     break;
@@ -62,47 +60,47 @@ impl Computer {
         let a = (opcode / 10000) % 10;
         let mut out = [0 as usize, 0 as usize, 0 as usize];
         for (i, mode) in [c, b, a].iter().enumerate() {
-            if *mode == 0 {
-                out[i] = self.code[self.index + i + 1] as usize;
+            out[i] = if *mode == 0 {
+                self.code[self.index + i + 1] as usize
             } else {
-                out[i] = self.index + i + 1;
-            }
+                self.index + i + 1
+            };
         }
         out
     }
     fn less_than(&mut self) {
         let [pos1, pos2, pos3] = self.get_positions();
-        if self.code[pos1] < self.code[pos2] {
-            self.code[pos3] = 1;
+        self.code[pos3] = if self.code[pos1] < self.code[pos2] {
+            1
         } else {
-            self.code[pos3] = 0;
-        }
+            0
+        };
         self.index += 4;
     }
     fn equals(&mut self) {
         let [pos1, pos2, pos3] = self.get_positions();
-        if self.code[pos1] == self.code[pos2] {
-            self.code[pos3] = 1;
+        self.code[pos3] = if self.code[pos1] == self.code[pos2] {
+            1
         } else {
-            self.code[pos3] = 0;
-        }
+            0
+        };
         self.index += 4;
     }
     fn jump_if_true(&mut self) {
         let [pos1, pos2, _] = self.get_positions();
-        if self.code[pos1] != 0 {
-            self.index = self.code[pos2] as usize;
+        self.index = if self.code[pos1] != 0 {
+            self.code[pos2] as usize
         } else {
-            self.index += 3;
-        }
+            self.index + 3
+        };
     }
     fn jump_if_false(&mut self) {
         let [pos1, pos2, _] = self.get_positions();
-        if self.code[pos1] == 0 {
-            self.index = self.code[pos2] as usize;
+        self.index = if self.code[pos1] == 0 {
+            self.code[pos2] as usize
         } else {
-            self.index += 3;
-        }
+            self.index + 3
+        };
     }
     fn get_input(&mut self) {
         let [pos1, _, _] = self.get_positions();
