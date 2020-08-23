@@ -28,7 +28,7 @@ impl Computer {
             inputs: Vec::<i64>::new(),
             outputs: Vec::<i64>::new(),
         };
-        x.code.extend((1..100).map(|_| 0).collect::<Vec<i64>>());
+        x.code.extend(vec![0; 100]);
         x
     }
     fn run(&mut self) {
@@ -58,7 +58,7 @@ impl Computer {
         let c = (opcode / 100) % 10;
         let b = (opcode / 1000) % 10;
         let a = (opcode / 10000) % 10;
-        let mut out = [0 as usize, 0 as usize, 0 as usize];
+        let mut out = [0 as usize; 3];
         for (i, mode) in [c, b, a].iter().enumerate() {
             out[i] = if *mode == 0 {
                 self.code[self.index + i + 1] as usize
