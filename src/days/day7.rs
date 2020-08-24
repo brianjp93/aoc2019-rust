@@ -3,59 +3,41 @@ use itertools::Itertools;
 
 pub fn main() {
     let input = utils::read_cs_nums("./src/data/day7.txt");
-
-    let max1 = find_max(input.clone(), false, vec![0, 1, 2, 3, 4]);
+    let max1 = find_max(input.clone(), vec![0, 1, 2, 3, 4]);
     println!("Part 1: {}", max1);
-
-    let max = find_max(input.clone(), true, vec![5, 6, 7, 8, 9]);
+    let max = find_max(input.clone(), vec![5, 6, 7, 8, 9]);
     println!("Part 2: {}", max);
 }
 
-fn find_max(input: Vec<i64>, feedback: bool, allowed_ints: Vec<i64>) -> i64 {
+fn find_max(input: Vec<i64>, allowed_ints: Vec<i64>) -> i64 {
     let mut max = 0;
-    // for perm in permute::permute(allowed_ints) {
     for perm in allowed_ints.into_iter().permutations(5) {
-        let out = recursive_run(input.clone(), perm, feedback);
+        let out = recursive_run(input.clone(), perm);
         if out > max {
-            max = out.clone();
+            max = out;
         }
     }
     max
 }
 
-
-fn recursive_run(input: Vec<i64>, phase: Vec<i64>, feedback: bool) -> i64 {
-    let mut amp_a = Computer::new(input.clone());
-    let mut amp_b = Computer::new(input.clone());
-    let mut amp_c = Computer::new(input.clone());
-    let mut amp_d = Computer::new(input.clone());
-    let mut amp_e = Computer::new(input.clone());
-    amp_a.inputs.extend(vec![phase[0], 0]);
-    amp_b.inputs.push(phase[1]);
-    amp_c.inputs.push(phase[2]);
-    amp_d.inputs.push(phase[3]);
-    amp_e.inputs.push(phase[4]);
-
-    while !amp_e.is_done {
-        amp_a.inputs.append(&mut amp_e.outputs);
-        amp_a.run();
-
-        amp_b.inputs.append(&mut amp_a.outputs);
-        amp_b.run();
-
-        amp_c.inputs.append(&mut amp_b.outputs);
-        amp_c.run();
-
-        amp_d.inputs.append(&mut amp_c.outputs);
-        amp_d.run();
-
-        amp_e.inputs.append(&mut amp_d.outputs);
-        amp_e.run();
-        if !feedback {
-            break;
+fn recursive_run(input: Vec<i64>, phase: Vec<i64>) -> i64 {
+    let mut circuit = (0..5).map(|_| Computer::new(input.clone())).collect_vec();
+    let circuit_len = circuit.len();
+    for i in 0..5 {
+        circuit[i].inputs.push(phase[i]);
+        if i == 0 {
+            circuit[i].inputs.push(0)
+        };
+    }
+    while !circuit[circuit_len - 1].is_done {
+        for i in 0..circuit_len {
+            let index: usize = if i == 0 { circuit_len - 1 } else { i - 1 };
+            let outputs: Vec<i64> = circuit[index].outputs.drain(..).collect();
+            circuit[i].inputs.extend(outputs);
+            circuit[i].run();
         }
     }
-    amp_e.outputs[0]
+    circuit[circuit_len - 1].outputs[0]
 }
 
 struct Computer {
