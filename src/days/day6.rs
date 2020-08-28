@@ -17,6 +17,8 @@ pub fn main() {
     let path_san = uni.get_path_to_com("SAN".to_string());
     let stuff: HashSet<_> = path_you.symmetric_difference(&path_san).collect();
 
+    println!("");
+    println!("___Day 6___");
     println!("Part 1: {:?}", dist);
     println!("Part 2: {:?}", &stuff.len());
 }

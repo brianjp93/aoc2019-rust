@@ -11,6 +11,8 @@ pub fn main() {
     let data = data.trim().to_string();
     let layers = get_layers(data);
     let out = find_least_zeros(&layers);
+    println!("");
+    println!("___Day 8___");
     println!("Part 1: {}", out);
     let image = find_image(&layers);
     for row in image.outer_iter() {
@@ -18,7 +20,7 @@ pub fn main() {
             .iter()
             .map(|x| if *x == 0 as i64 { "." } else { "#" })
             .collect();
-        println!("{:?}", row.concat());
+        println!("{}", row.concat());
     }
 }
 
