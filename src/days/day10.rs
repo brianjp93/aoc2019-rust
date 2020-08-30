@@ -4,8 +4,7 @@ use std::collections::HashSet;
 pub fn main() {
     let data = fs::read_to_string("./src/data/day10.txt").unwrap();
     let data: Vec<&str> = data.trim().split("\n").collect();
-    let points = get_point_vector(data);
-    let field = Field {map: points};
+    let field = Field {map: get_point_vector(data)};
     let count = field.find_most_visible();
     println!("{}", count);
 }
@@ -46,7 +45,7 @@ impl Field {
         let mut angles = HashSet::<i32>::new();
         for other in &self.map {
             if point != other {
-                let angle = (point.angle_to(other) * 100000.0_f64) as i32;
+                let angle = (point.angle_to(other) * 100000_f64) as i32;
                 angles.insert(angle);
             }
         }
